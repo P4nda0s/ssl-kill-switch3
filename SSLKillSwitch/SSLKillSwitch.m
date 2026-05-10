@@ -436,17 +436,17 @@ HOOKBODY({
     return old__AFSecurityPolicy_setAllowInvalidCertificates(self, _cmd, YES);
 })
 
-static BOOL (*old__AFSecurityPolicy_policyWithPinningMode)(id cls, SEL _cmd, BOOL mode);
-static BOOL new__AFSecurityPolicy_policyWithPinningMode(id cls, SEL _cmd, BOOL mode) 
+static id (*old__AFSecurityPolicy_policyWithPinningMode)(id cls, SEL _cmd, NSUInteger mode);
+static id new__AFSecurityPolicy_policyWithPinningMode(id cls, SEL _cmd, NSUInteger mode)
 HOOKBODY({
-    SSKVerboseLog("AFSecurityPolicy policyWithPinningMode: %d -> AFSSLPinningModeNone", mode);
-    return old__AFSecurityPolicy_setAllowInvalidCertificates(cls, _cmd, 0); // AFSSLPinningModeNone
+    SSKVerboseLog("AFSecurityPolicy policyWithPinningMode: %lu -> AFSSLPinningModeNone", (unsigned long)mode);
+    return old__AFSecurityPolicy_policyWithPinningMode(cls, _cmd, 0); // AFSSLPinningModeNone
 })
 
-static BOOL (*old__AFSecurityPolicy_policyWithPinningMode_withPinnedCertificates)(id cls, SEL _cmd, BOOL mode, id cert);
-static BOOL new__AFSecurityPolicy_policyWithPinningMode_withPinnedCertificates(id cls, SEL _cmd, BOOL mode, id cert) 
+static id (*old__AFSecurityPolicy_policyWithPinningMode_withPinnedCertificates)(id cls, SEL _cmd, NSUInteger mode, id cert);
+static id new__AFSecurityPolicy_policyWithPinningMode_withPinnedCertificates(id cls, SEL _cmd, NSUInteger mode, id cert)
 HOOKBODY({
-    SSKVerboseLog("AFSecurityPolicy policyWithPinningMode: %d withPinnedCertificates: %{public}@ -> AFSSLPinningModeNone", mode, cert);
+    SSKVerboseLog("AFSecurityPolicy policyWithPinningMode: %lu withPinnedCertificates: %{public}@ -> AFSSLPinningModeNone", (unsigned long)mode, cert);
     return old__AFSecurityPolicy_policyWithPinningMode_withPinnedCertificates(cls, _cmd, 0, cert); // AFSSLPinningModeNone
 })
 
